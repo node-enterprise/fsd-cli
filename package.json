@@ -1,0 +1,46 @@
+{
+  "name": "fsd-cli",
+  "version": "1.0.0",
+  "description": "Feature sliced design CLI",
+  "bin": {
+    "fsd": "./bin/fsd.js"
+  },
+  "engines": {
+    "node": ">= 14"
+  },
+  "scripts": {
+    "start": "node ./bin/fsd.js generate -w card",
+    "build": "node ./scripts/build"
+  },
+  "keywords": [
+    "fsd",
+    "cli",
+    "feature sliced design"
+  ],
+  "author": "Mardonov Baxtiyor<jbalancer@mail.ru>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/node-enterprise/fsd-cli.git"
+  },
+  "homepage": "https://github.com/node-enterprise/fsd-cli.git",
+  "bugs": {
+    "url": "https://github.com/node-enterprise/fsd-cli/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@types/clear": "^0.1.2",
+    "@types/figlet": "^1.5.6",
+    "@types/node": "^20.3.3",
+    "@types/yargs": "^17.0.24",
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "clear": "^0.1.0",
+    "esbuild": "^0.18.11",
+    "figlet": "^1.6.0",
+    "prepend-file": "^2.0.1",
+    "yargs": "^17.7.2"
+  }
+}
