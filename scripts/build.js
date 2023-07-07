@@ -1,34 +1,44 @@
 const esbuild = require("esbuild");
 const path = require('path');
 const prependFile = require('prepend-file');
+const glob = require('tiny-glob');
 
 const paths = {
-  entry: path.resolve(
-    __dirname, '../bin/fsd.ts'
-  ),
-  output: path.resolve(
-    __dirname, '../bin/fsd.js'
-  )
+  inputDir: '../bin/**/*.ts',
+  outputDir: '../bin',
+  cli: '../bin/fsd.js'
 };
 
-esbuild
-  .build({
-    logLevel: "info",
-    entryPoints: [ paths.entry ],
-    minify: true,
-    bundle: true,
-    platform: 'node',
-    outfile: paths.output
-  })
-  .then(result => {
+for (let key in paths) {
+  paths[key] = path.resolve(
+    __dirname, paths[key]
+  );
+}
+
+(async () => {
+  const entryPoints = await glob(
+    paths.inputDir, { absolute: true }
+  );
+
+  try {
+    const result = await esbuild
+      .build({
+        logLevel: "info",
+        entryPoints,
+        minify: true,
+        bundle: true,
+        platform: 'node',
+        outdir: paths.outputDir
+      });
+
     if (result.errors.length)
       return result.errors.forEach(console.error);
 
-    return prependFile(
-      paths.output, '#!/usr/bin/env node\n'
+    await prependFile(
+      paths.cli, '#!/usr/bin/env node\n'
     );
-  })
-  .catch(error => {
+  } catch (error) {
     console.log(error);
     process.exit(1);
-  });
+  }
+})();

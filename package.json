@@ -9,8 +9,9 @@
     "node": ">= 14"
   },
   "scripts": {
-    "start": "node ./bin/fsd.js generate -w card",
-    "build": "node ./scripts/build"
+    "start": "node ./bin/fsd.js delete -w card",
+    "build": "node ./scripts/build.js",
+    "postinstall": "node ./bin/postinstall.js"
   },
   "keywords": [
     "fsd",
@@ -37,10 +38,10 @@
     "@types/yargs": "^17.0.24",
     "boxen": "^7.1.1",
     "chalk": "^5.3.0",
-    "clear": "^0.1.0",
     "esbuild": "^0.18.11",
     "figlet": "^1.6.0",
     "prepend-file": "^2.0.1",
+    "tiny-glob": "^0.2.9",
     "yargs": "^17.7.2"
   }
 }
