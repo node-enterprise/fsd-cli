@@ -38,6 +38,7 @@
     "@types/yargs": "^17.0.24",
     "boxen": "^7.1.1",
     "chalk": "^5.3.0",
+    "change-case": "^4.1.2",
     "esbuild": "^0.18.11",
     "figlet": "^1.6.0",
     "prepend-file": "^2.0.1",

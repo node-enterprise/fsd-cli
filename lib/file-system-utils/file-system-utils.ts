@@ -8,64 +8,73 @@ export default class FileSystemUtils {
   ) {}
 
   findSourceDir(
-    sourcePath: string
-  ): string {
-    return this.sourceDirs.find(
-      sourceDir => fs.existsSync(
-        path.resolve(
-          sourcePath, `./${sourceDir}`
-        )
-      )
-    ) || '';
-  }
-
-  findSourceDirInPathInside(
-    sourcePath: string
-  ): string {
-    return this.findSourceDir(
-      sourcePath
-    );
-  }
-  
-  findSourceDirInPathUp(
     sourcePath: string,
     separator: string
   ): string {
-    const desiredPath = sourcePath
+    const dir: string | undefined = this
+      .sourceDirs
+      .find(
+        sourceDir => fs.existsSync(
+          path.resolve(
+            sourcePath, `./${sourceDir}`
+          )
+        )
+      );
+
+    return dir
+      ? `${sourcePath}${separator}${dir}`
+      : '';
+  }
+
+  findSourcePathInside(
+    sourcePath: string,
+    separator: string
+  ): string {
+    return this.findSourceDir(
+      sourcePath, separator
+    );
+  }
+
+  findSourcePathUp(
+    sourcePath: string,
+    separator: string
+  ): string {
+    const desiredPath: string = sourcePath
       .split(separator)
       .slice(0, -1)
       .join(separator);
 
     if (!desiredPath) return '';
 
-    const dir = this.findSourceDir(
-      desiredPath
+    const dir: string = this.findSourceDir(
+      desiredPath, separator
     );
   
     return dir
       ? dir
-      : this.findSourceDirInPathUp(
-        sourcePath, separator
+      : this.findSourcePathUp(
+        desiredPath, separator
       );
   }
-  
-  findSourceDirInPath(
+
+  findSourcePathAnywhere(
     sourcePath: string,
     separator: string
   ): string {
     return this
-      .findSourceDirInPathInside(
-        sourcePath
+      .findSourcePathInside(
+        sourcePath, separator
       )
-      || this.findSourceDirInPathUp(
+      || this.findSourcePathUp(
         sourcePath, separator
       );
   }
   
   findSourcePath(): string {
-    const processPath: string = process.cwd();
+    const processPath: string = process
+      .cwd();
   
-    return this.findSourceDirInPath(
+    return this.findSourcePathAnywhere(
       processPath, path.sep
     );
   }
