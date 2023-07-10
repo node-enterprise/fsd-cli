@@ -10,8 +10,7 @@
   },
   "scripts": {
     "start": "node ./bin/fsd.js delete -w card",
-    "build": "node ./scripts/build.js",
-    "postinstall": "node ./bin/postinstall.js"
+    "build": "node ./scripts/build.js"
   },
   "keywords": [
     "fsd",
