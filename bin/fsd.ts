@@ -7,6 +7,7 @@ import {
   showExampleText
 } from '../lib/console-formatters/show-welcome-text';
 import { SliceType } from '../lib/types/slice.types';
+import { isCommand } from '../lib/command/checkers';
 
 const generationCommandOptions: CommandOption = {
   [SliceType.widget]: {
@@ -41,14 +42,14 @@ const generationCommandOptions: CommandOption = {
   }
 };
 
-const args = hideBin(process.argv);
+const argv = hideBin(process.argv);
 
-if (!args.length) {
+if (!argv.length) {
   showWelcomeText();
   showExampleText(generationCommandOptions);
 }
 
-yargs(args)
+yargs(argv)
   .command({
     command: 'generate',
     describe: 'Generate slice',
@@ -56,10 +57,15 @@ yargs(args)
     builder: generationCommandOptions,
     handler: args => {
       for (const key in generationCommandOptions) {
-        args[key]
-          && generateSlice(
-            args[key] as string, key as SliceType
-          );
+        const sliceType = key as SliceType;
+
+        isCommand(
+          generationCommandOptions,
+          argv,
+          args,
+          sliceType
+        )
+          && generateSlice(args[key], sliceType);
       }
     }
   })

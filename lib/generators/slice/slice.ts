@@ -13,11 +13,30 @@ const sourceDirs: string[] = [
   'lib'
 ];
 
+const slicesFolderNames:
+  Partial<Record<SliceType, string>> = {
+  [SliceType.widget]: 'widgets',
+  [SliceType.page]: 'pages',
+  [SliceType.feature]: 'features',
+  [SliceType.entity]: 'entities',
+  [SliceType.module]: 'modules',
+  [SliceType.component]: 'components'
+};
+
+const getFolderNameBySliceType = (
+  sliceType: string
+): string => slicesFolderNames[sliceType]
+  || sliceType;
+
 const createSliceFolder = (
   sourcePath: string,
   sliceType: SliceType
 ): string => {
-  const slicePath = `${sourcePath}/${sliceType}`;
+  const folderName = getFolderNameBySliceType(
+    sliceType
+  );
+
+  const slicePath = `${sourcePath}/${folderName}`;
 
   fs.existsSync(slicePath)
     || fs.mkdirSync(slicePath);
@@ -31,7 +50,7 @@ const createSegmentFolder = (
   sliceName: string
 ): string => {
   const segmentPath = `${sourcePath}/` +
-    `${sliceType}/${paramCase(sliceName)}`;
+    paramCase(sliceName);
 
   fs.existsSync(segmentPath)
     || fs.mkdirSync(segmentPath);
@@ -113,13 +132,15 @@ export const generateSlice = (
     throw new Error(`Source path not found`);
   }
 
-  createSliceFolder(sourcePath, sliceType);
+  const slicePath = createSliceFolder(
+    sourcePath, sliceType
+  );
+
+  const segmentPath = createSegmentFolder(
+    slicePath, sliceType, sliceName
+  );
 
   createSegmentFiles(
-    sliceType,
-    sliceName,
-    createSegmentFolder(
-      sourcePath, sliceType, sliceName
-    )
+    sliceType, sliceName, segmentPath
   );
 };
