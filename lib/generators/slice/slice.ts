@@ -1,10 +1,12 @@
 import FileSystemUtils from "../../file-system-utils/file-system-utils";
 import fs from 'fs';
 import { segmentFileGenerators } from "../segment/segment";
-import { paramCase } from "change-case";
+import { paramCase, pascalCase } from "change-case";
 import { commandTextWithStatus } from "../../console-formatters/show-text";
 import { CommandTextStatus } from "../../types/command.types";
 import { SegmentFileOptions } from "../../types/segment.types";
+import { SliceType } from "../../types/slice.types";
+import { onBeforeSliceGeneration } from "./before-generate";
 
 const sourceDirs: string[] = [
   'src',
@@ -13,7 +15,7 @@ const sourceDirs: string[] = [
 
 const createSliceFolder = (
   sourcePath: string,
-  sliceType: string
+  sliceType: SliceType
 ): string => {
   const slicePath = `${sourcePath}/${sliceType}`;
 
@@ -25,7 +27,7 @@ const createSliceFolder = (
 
 const createSegmentFolder = (
   sourcePath: string,
-  sliceType: string,
+  sliceType: SliceType,
   sliceName: string
 ): string => {
   const segmentPath = `${sourcePath}/` +
@@ -44,11 +46,11 @@ const createSegmentFile = (
   const filename = `${segmentPath}/${segmentOptions.filename}`;
 
   if (fs.existsSync(filename)) {
-    commandTextWithStatus(
-      'EXIST',
-      segmentOptions.filename,
-      CommandTextStatus.info
-    );
+    commandTextWithStatus({
+      title: 'EXIST',
+      text: segmentOptions.filename,
+      status: CommandTextStatus.info
+    }).log();
   } else {
     fs.writeFile(
       filename,
@@ -56,17 +58,17 @@ const createSegmentFile = (
       { encoding: 'utf-8' },
       error => {
         if (error) {
-          commandTextWithStatus(
-            'FAILED CREATE',
-            segmentOptions.filename,
-            CommandTextStatus.error
-          );
+          commandTextWithStatus({
+            title: 'FAILED CREATE',
+            text: segmentOptions.filename,
+            status: CommandTextStatus.error
+          }).log();
         } else {
-          commandTextWithStatus(
-            'CREATED',
-            segmentOptions.filename,
-            CommandTextStatus.success
-          );
+          commandTextWithStatus({
+            title: 'CREATED',
+            text: segmentOptions.filename,
+            status: CommandTextStatus.success
+          }).log();
         }
       }
     );
@@ -74,10 +76,15 @@ const createSegmentFile = (
 };
 
 const createSegmentFiles = (
-  sliceType: string,
+  sliceType: SliceType,
   sliceName: string,
   segmentPath: string
 ) => {
+  commandTextWithStatus({
+    title: `${pascalCase(sliceType)} generation`,
+    bold: true
+  }).log();
+
   segmentFileGenerators.forEach(
     segmentOptionsGenerator => createSegmentFile(
       segmentPath,
@@ -89,21 +96,24 @@ const createSegmentFiles = (
 };
 
 export const generateSlice = (
-  sliceName: string,
-  sliceType: string
+  _sliceName: string,
+  _sliceType: SliceType
 ) => {
+  const {
+    sliceName,
+    sliceType
+  } = onBeforeSliceGeneration(
+    _sliceName, _sliceType
+  );
+
   const sourcePath = new FileSystemUtils(sourceDirs)
     .findSourcePath();
 
   if (!sourcePath) {
-    throw new Error(
-      `Source path not found`
-    );
+    throw new Error(`Source path not found`);
   }
 
-  createSliceFolder(
-    sourcePath, sliceType
-  );
+  createSliceFolder(sourcePath, sliceType);
 
   createSegmentFiles(
     sliceType,

@@ -1,4 +1,5 @@
 import { Options } from "yargs"
+import { SliceType } from "./slice.types"
 
 export enum CommandTextStatus {
   success = 'green',
@@ -7,15 +8,22 @@ export enum CommandTextStatus {
   info = 'blackBright'
 }
 
-export type CommandOptionName = 'widget'
-  | 'page'
-  | 'feature'
-  | 'entity'
-
 export type CommandOption = Record<
-  CommandOptionName, CustomOption
+  SliceType, CustomOption
 >
 
 export type CustomOption = Options & {
   example?: string
+}
+
+export interface CommandTextOption {
+  text?: string
+  title?: string
+  status?: CommandTextStatus
+  bold?: boolean
+}
+
+export interface CommandResult {
+  value: string
+  log: () => void
 }

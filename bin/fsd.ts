@@ -2,53 +2,63 @@ import { CommandOption } from '../lib/types/command.types';
 import { generateSlice } from '../lib/generators/slice/slice';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { showWelcomeText } from '../lib/console-formatters/show-welcome-text';
-import fs from 'fs';
-import path from 'path';
+import {
+  showWelcomeText,
+  showExampleText
+} from '../lib/console-formatters/show-welcome-text';
+import { SliceType } from '../lib/types/slice.types';
 
-const flagFilePath = path.resolve(
-  __dirname, './.firstrun'
-);
-
-if (!fs.existsSync(flagFilePath)) {
-  showWelcomeText();
-  fs.writeFileSync(flagFilePath, '');
-}
-
-const generateCommandOptions: CommandOption = {
-  widget: {
+const generationCommandOptions: CommandOption = {
+  [SliceType.widget]: {
     alias: 'w',
     description: 'Generate widget',
-    example: 'fsd g -w placeholder'
+    example: 'fsd g -w cart'
   },
-  page: {
+  [SliceType.page]: {
     alias: 'p',
     description: 'Generate page',
-    example: 'fsd g -p user-creation'
+    example: 'fsd g -p registration'
   },
-  feature: {
+  [SliceType.feature]: {
     alias: 'f',
     description: 'Generate feature',
-    example: 'fsd g -f cart'
+    example: 'fsd g -f cartItem'
   },
-  entity: {
+  [SliceType.entity]: {
     alias: 'e',
     description: 'Generate entity',
-    example: 'fsd g -e cartItem'
+    example: 'fsd g -e cart-item-details'
+  },
+  [SliceType.module]: {
+    alias: 'm',
+    description: 'Generate module',
+    example: 'fsd g -m userProfile'
+  },
+  [SliceType.component]: {
+    alias: 'c',
+    description: 'Generate component',
+    example: 'fsd g -c table'
   }
 };
 
-yargs(hideBin(process.argv))
+const args = hideBin(process.argv);
+
+if (!args.length) {
+  showWelcomeText();
+  showExampleText(generationCommandOptions);
+}
+
+yargs(args)
   .command({
     command: 'generate',
     describe: 'Generate slice',
     aliases: [ 'g' ],
-    builder: generateCommandOptions,
+    builder: generationCommandOptions,
     handler: args => {
-      for (const key in generateCommandOptions) {
+      for (const key in generationCommandOptions) {
         args[key]
           && generateSlice(
-            args[key] as string, key
+            args[key] as string, key as SliceType
           );
       }
     }
