@@ -13,32 +13,32 @@ const generationCommandOptions: CommandOption = {
   [SliceType.widget]: {
     alias: 'w',
     description: 'Generate widget',
-    example: 'fsd g -w cart'
+    example: 'fsd g -w widget-name'
   },
   [SliceType.page]: {
     alias: 'p',
     description: 'Generate page',
-    example: 'fsd g -p registration'
+    example: 'fsd g -p page-name'
   },
   [SliceType.feature]: {
     alias: 'f',
     description: 'Generate feature',
-    example: 'fsd g -f cartItem'
+    example: 'fsd g -f feature-name'
   },
   [SliceType.entity]: {
     alias: 'e',
     description: 'Generate entity',
-    example: 'fsd g -e cart-item-details'
+    example: 'fsd g -e entity-name'
   },
   [SliceType.module]: {
     alias: 'm',
     description: 'Generate module',
-    example: 'fsd g -m userProfile'
+    example: 'fsd g -m module-name'
   },
   [SliceType.component]: {
     alias: 'c',
     description: 'Generate component',
-    example: 'fsd g -c table'
+    example: 'fsd g -c component-name'
   }
 };
 

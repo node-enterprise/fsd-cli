@@ -1,6 +1,6 @@
 {
   "name": "fsd-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Feature sliced design CLI",
   "bin": {
     "fsd": "./bin/fsd.js"
@@ -33,16 +33,18 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@types/figlet": "^1.5.6",
-    "@types/node": "^20.3.3",
-    "@types/yargs": "^17.0.24",
     "boxen": "^7.1.1",
     "chalk": "^5.3.0",
     "change-case": "^4.1.2",
-    "esbuild": "^0.18.11",
     "figlet": "^1.6.0",
-    "prepend-file": "^2.0.1",
-    "tiny-glob": "^0.2.9",
     "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/figlet": "^1.5.6",
+    "@types/node": "^20.3.3",
+    "@types/yargs": "^17.0.24",
+    "esbuild": "^0.18.11",
+    "prepend-file": "^2.0.1",
+    "tiny-glob": "^0.2.9"
   }
 }
