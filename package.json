@@ -1,6 +1,6 @@
 {
   "name": "fsd-cli",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "description": "Feature sliced design CLI",
   "bin": {
     "fsd": "./bin/fsd.js"
