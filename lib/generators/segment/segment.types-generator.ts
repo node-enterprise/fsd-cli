@@ -1,14 +1,24 @@
-import { paramCase } from "change-case";
+import { paramCase, pascalCase } from "change-case";
 import { SegmentFileOptionsGenerator } from "../../types/segment.types";
 
 export const generateTypesSegment:
   SegmentFileOptionsGenerator = (
   sliceName: string
-) => ({
-  filename: `${paramCase(sliceName)}.types.ts`,
-  content: `
-export interface IProps {}
+) => {
+  const pascalCaseSliceName = pascalCase(
+    sliceName
+  );
 
-export interface IEmits {}
-  `.trim()
-});
+  return {
+    filename: `${paramCase(sliceName)}.types.ts`,
+    content: `
+export interface I${pascalCaseSliceName}Props {
+  example?: void
+}
+
+export interface I${pascalCaseSliceName}Emits {
+  (event: 'example'): void
+}
+    `.trim()
+  };
+};

@@ -115,16 +115,9 @@ const createSegmentFiles = (
 };
 
 export const generateSlice = (
-  _sliceName: string,
-  _sliceType: SliceType
+  sliceName: string,
+  sliceType: SliceType
 ) => {
-  const {
-    sliceName,
-    sliceType
-  } = onBeforeSliceGeneration(
-    _sliceName, _sliceType
-  );
-
   const sourcePath = new FileSystemUtils(sourceDirs)
     .findSourcePath();
 
@@ -139,8 +132,15 @@ export const generateSlice = (
   const segmentPath = createSegmentFolder(
     slicePath, sliceType, sliceName
   );
+  
+  const {
+    sliceName: _sliceName,
+    sliceType: _sliceType
+  } = onBeforeSliceGeneration(
+    sliceName, sliceType
+  );
 
   createSegmentFiles(
-    sliceType, sliceName, segmentPath
+    _sliceType, _sliceName, segmentPath
   );
 };

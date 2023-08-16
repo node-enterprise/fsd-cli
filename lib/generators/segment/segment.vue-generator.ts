@@ -11,17 +11,19 @@ export const generateVueSegment:
   );
 
   const useSegmenName = `use${sliceNameInPascalCase}`;
+  const propsName = `I${sliceNameInPascalCase}Props`;
+  const emitsName = `I${sliceNameInPascalCase}Emits`;
 
   return {
     filename: `${sliceNameInPascalCase}.vue`,
     content: `
 <script lang="ts" setup>
 
-import { IProps, IEmits } from './${paramCase(sliceName)}.types';
+import { ${propsName}, ${emitsName} } from './${paramCase(sliceName)}.types';
 import ${useSegmenName} from './${useSegmenName}';
 
-const props = defineProps<IProps>();
-const emit = defineEmits<IEmits>();
+const props = defineProps<${propsName}>();
+const emit = defineEmits<${emitsName}>();
 
 const {
 } = ${useSegmenName}(props, emit);

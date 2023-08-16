@@ -11,15 +11,17 @@ export const generateUseSegment:
   );
 
   const segmentName = `use${sliceNameInPascalCase}`;
+  const propsName = `I${sliceNameInPascalCase}Props`;
+  const emitsName = `I${sliceNameInPascalCase}Emits`;
 
   return {
     filename: `${segmentName}.ts`,
     content: `
-import { IProps, IEmits } from './${paramCase(sliceName)}.types';
+import { ${propsName}, ${emitsName} } from './${paramCase(sliceName)}.types';
 
 export default function ${segmentName}(
-  props: IProps,
-  emit: IEmits
+  props: ${propsName},
+  emit: ${emitsName}
 ) {
   return {};
 }

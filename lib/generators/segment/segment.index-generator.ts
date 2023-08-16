@@ -13,9 +13,7 @@ export const generateIndexSegment:
   return {
     filename: 'index.ts',
     content: `
-import ${sliceNameInPascalCase} from './${sliceNameInPascalCase}.vue';
-
-export default ${sliceNameInPascalCase};
+export { default } from './${sliceNameInPascalCase}.vue';
     `.trim()
   };
 };
