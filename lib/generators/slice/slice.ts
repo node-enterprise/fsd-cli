@@ -13,6 +13,10 @@ const sourceDirs: string[] = [
   'lib'
 ];
 
+const ignoreDirCases: string[] = [
+  'ui'
+];
+
 const slicesFolderNames:
   Partial<Record<SliceType, string>> = {
   [SliceType.widget]: 'widgets',
@@ -46,14 +50,28 @@ const createSliceFolder = (
 
 const createSegmentFolder = (
   sourcePath: string,
-  sliceType: SliceType,
-  sliceName: string
+  fullSliceName: string
 ): string => {
-  const segmentPath = `${sourcePath}/` +
-    paramCase(sliceName);
+  const sliceFolders = fullSliceName
+    .split('/')
+    .map(folder => ignoreDirCases
+      .includes(folder.toLowerCase())
+      ? folder
+      : paramCase(folder));
 
-  fs.existsSync(segmentPath)
-    || fs.mkdirSync(segmentPath);
+  sliceFolders.forEach(
+    (sliceFolder, index) => {
+      const folderPath = `${sourcePath}/` +
+        `${sliceFolders.slice(0, index).join('/')}/` +
+        sliceFolder;
+
+      fs.existsSync(folderPath)
+        || fs.mkdirSync(folderPath);
+    }
+  );
+
+  const segmentPath = `${sourcePath}/` +
+    sliceFolders.join('/');
 
   return segmentPath;
 };
@@ -114,8 +132,14 @@ const createSegmentFiles = (
   );
 };
 
+const getOnlySliceName = (
+  fullSliceName: string
+): string => fullSliceName
+  .split('/')
+  .pop() || '';
+
 export const generateSlice = (
-  sliceName: string,
+  fullSliceName: string,
   sliceType: SliceType
 ) => {
   const sourcePath = new FileSystemUtils(sourceDirs)
@@ -130,17 +154,17 @@ export const generateSlice = (
   );
 
   const segmentPath = createSegmentFolder(
-    slicePath, sliceType, sliceName
+    slicePath, fullSliceName
   );
-  
+
   const {
-    sliceName: _sliceName,
+    sliceName,
     sliceType: _sliceType
   } = onBeforeSliceGeneration(
-    sliceName, sliceType
+    getOnlySliceName(fullSliceName), sliceType
   );
 
   createSegmentFiles(
-    _sliceType, _sliceName, segmentPath
+    _sliceType, sliceName, segmentPath
   );
 };

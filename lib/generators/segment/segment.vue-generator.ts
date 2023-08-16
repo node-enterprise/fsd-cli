@@ -19,7 +19,10 @@ export const generateVueSegment:
     content: `
 <script lang="ts" setup>
 
-import { ${propsName}, ${emitsName} } from './${paramCase(sliceName)}.types';
+import {
+  ${propsName},
+  ${emitsName}
+} from './${paramCase(sliceName)}.types';
 import ${useSegmenName} from './${useSegmenName}';
 
 const props = defineProps<${propsName}>();

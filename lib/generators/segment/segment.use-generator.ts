@@ -17,7 +17,10 @@ export const generateUseSegment:
   return {
     filename: `${segmentName}.ts`,
     content: `
-import { ${propsName}, ${emitsName} } from './${paramCase(sliceName)}.types';
+import {
+  ${propsName},
+  ${emitsName}
+} from './${paramCase(sliceName)}.types';
 
 export default function ${segmentName}(
   props: ${propsName},

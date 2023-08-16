@@ -36,7 +36,13 @@ yarn add fsd-cli
 ### Command structure
 
 ```sh
-fsd [COMMAND] [FLAG] [VALUE] 
+fsd [COMMAND] [FLAG] [VALUE]
+```
+
+Subfolder generation available, example:
+
+```sh
+fsd generate --shared UI/base-component
 ```
 
 ### Commands

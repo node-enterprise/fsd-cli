@@ -5,6 +5,7 @@ export enum SliceType {
   entity = 'entity',
   module = 'module',
   component = 'component',
+  shared = 'shared'
 }
 
 export interface SliceOptions {

@@ -39,6 +39,11 @@ const generationCommandOptions: CommandOption = {
     alias: 'c',
     description: 'Generate component',
     example: 'fsd g -c component-name'
+  },
+  [SliceType.shared]: {
+    alias: 's',
+    description: 'Generate shared',
+    example: 'fsd g -s shared-name'
   }
 };
 
