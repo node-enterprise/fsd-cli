@@ -17,9 +17,15 @@
   "keywords": [
     "fsd",
     "cli",
-    "feature sliced design"
+    "feature sliced design",
+    "fsd cli",
+    "fsd-cli"
   ],
-  "author": "Mardonov Baxtiyor<jbalancer@mail.ru>",
+  "author": {
+    "name": "Mardonov Baxtiyor",
+    "email": "jbalancer@mail.ru",
+    "url": "https://jbalancer.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/node-enterprise/fsd-cli.git"
