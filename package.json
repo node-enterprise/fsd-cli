@@ -10,9 +10,7 @@
     "node": ">= 14"
   },
   "scripts": {
-    "start": "node ./bin/fsd.js delete -w card",
-    "build": "node ./scripts/build.js",
-    "prepare": "npm run build"
+    "prepare": "node ./scripts/build.js"
   },
   "keywords": [
     "fsd",
